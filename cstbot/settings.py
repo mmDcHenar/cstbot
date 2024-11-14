@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-nt*u@gylxxpq42iptiyw-1p=5y94*^pcik3==_*^=8f6erd)4^"
+SECRET_KEY = config.SECRET_KEY
+
+if not SECRET_KEY:
+    import secrets
+    SECRET_KEY = secrets.token_urlsafe(50)
+    with open(".env", "a") as env_file:
+        env_file.write(f"\nSECRET_KEY=\"{SECRET_KEY}\"")
+
+    import logging
+    logger = logging.getLogger(__name__)
+    logger.warning("WARNING: SECRET_KEY not set! Generated and saved to .env.")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+    CORS_ORIGIN_ALLOW_ALL = True
+else:
+    from urllib.parse import urlparse
+    ALLOWED_HOSTS = [urlparse(config.BASE_URL).hostname]
+    CORS_ALLOWED_ORIGINS = [config.BASE_URL]
 
 
 # Application definition
