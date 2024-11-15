@@ -8,7 +8,7 @@ from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.enums import ParseMode
 
 from config import BOT_TOKEN, BOT_PROXY
-from . import handlers
+from . import handlers, middlewares
 
 
 def setup():
@@ -21,6 +21,7 @@ def setup():
 
     dp = Dispatcher()
 
+    middlewares.setup(dp)
     handlers.setup(dp)
 
     bot = Bot(
