@@ -19,22 +19,10 @@ class TextManager:
             pipe.close()
 
     def get_message_text(self, _title: str, **kwargs) -> str:
-        text = self.client.hget("messages", _title) or "empty"
-        for key in kwargs:
-            text = text.replace(
-                key.upper(),
-                f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key])
-            )
-        return text
+        return (self.client.hget("messages", _title) or _title).format(**kwargs)
 
     def get_button_text(self, _title: str, **kwargs) -> str:
-        text = self.client.hget("buttons", _title) or "empty"
-        for key in kwargs:
-            text = text.replace(
-                key.upper(),
-                f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key])
-            )
-        return text
+        return (self.client.hget("buttons", _title) or _title).format(**kwargs)
 
     def update_text(self, text: Text):
         if text.is_button:
