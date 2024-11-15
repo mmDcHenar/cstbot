@@ -7,7 +7,10 @@ from utils.types import UnitType, Group, CourseType
 
 
 class Text(models.Model):
-    title = models.CharField(max_length=64, unique=True, null=False, blank=False)
+    class Meta:
+        unique_together = ("title", "is_button")
+
+    title = models.CharField(max_length=64, null=False, blank=False)
     text = models.TextField()
     is_button = models.BooleanField(default=False)
 
