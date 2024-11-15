@@ -1,24 +1,57 @@
+from redis import StrictRedis
+
 from core.models import Text
+from config import REDIS_HOST, REDIS_PORT
 
 
-# TODO: these functions are not efficient, these may cause unneeded load into database.
-# getting text must be in another approach.
-# like loading all in startup, then using a message broker and after changes do a reload
-# or just reload text from database within intervals (like one minute)
+class TextManager:
+    def __init__(self):
+        self.client = StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True)
 
-async def get_message_text(_title: str, **kwargs) -> str:
-    """Get live message text from database. return `empty` if not found"""
-    button = await Text.objects.filter(title=_title).afirst()
-    text = button.text if button else "empty"
-    for key in kwargs:
-        text = text.replace(key.upper(), f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key]))
-    return text
+    def load_all_text_from_db(self):
+        with self.client.pipeline() as pipe:
+            for record in Text.objects.all():
+                if record.is_button:
+                    pipe.hset("buttons", record.title, record.text)
+                else:
+                    pipe.hset("messages", record.title, record.text)
+                pipe.execute()
+            pipe.close()
+
+    def get_message_text(self, _title: str, **kwargs) -> str:
+        text = self.client.hget("messages", _title) or "empty"
+        for key in kwargs:
+            text = text.replace(
+                key.upper(),
+                f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key])
+            )
+        return text
+
+    def get_button_text(self, _title: str, **kwargs) -> str:
+        text = self.client.hget("buttons", _title) or "empty"
+        for key in kwargs:
+            text = text.replace(
+                key.upper(),
+                f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key])
+            )
+        return text
+
+    def update_text(self, text: Text):
+        if text.is_button:
+            self.client.hset("buttons", text.title, text.text)
+        else:
+            self.client.hset("messages", text.title, text.text)
+
+    def delete_text(self, text: Text):
+        if text.is_button:
+            self.client.hdel("buttons", text.title)
+        else:
+            self.client.hdel("messages", text.title)
 
 
-async def get_button_text(_title: str, **kwargs) -> str:
-    """Get live button text from database. return `empty` if not found"""
-    message: Text = await Text.objects.filter(title=_title, is_button=True).afirst()
-    text = message.text if message else "empty"
-    for key in kwargs:
-        text = text.replace(key.upper(), f"{kwargs[key]:,}" if isinstance(kwargs[key], int) else str(kwargs[key]))
-    return text
+manager = TextManager()
+get_message_text = manager.get_message_text
+get_button_text = manager.get_button_text
+
+__all__ = ["TextManager", "manager", "get_message_text", "get_button_text"]
+

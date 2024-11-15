@@ -9,7 +9,7 @@ from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.fsm.storage.base import DefaultKeyBuilder
 from aiogram.fsm.storage.redis import RedisStorage, RedisEventIsolation
 
-from . import handlers, middlewares
+from . import handlers, middlewares, texts
 from config import BOT_TOKEN, BOT_PROXY, REDIS_PORT, REDIS_HOST
 
 
@@ -20,6 +20,8 @@ def setup():
         level=logging.INFO,
         stream=sys.stdout
     )
+
+    texts.manager.load_all_text_from_db()
 
     storage = RedisStorage.from_url(
         f"redis://{REDIS_HOST}:{REDIS_PORT}",

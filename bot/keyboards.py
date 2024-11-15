@@ -7,15 +7,15 @@ from bot.texts import get_button_text as _
 
 class Keyboard:
     @staticmethod
-    async def main_menu() -> ReplyKeyboardMarkup:
+    def main_menu() -> ReplyKeyboardMarkup:
         builder = ReplyKeyboardBuilder()
-        builder.button(text=await _("faq"))
+        builder.button(text=_("faq"))
         builder.adjust(1)
         return builder.as_markup(resize_keyboard=True)
 
     @staticmethod
-    async def back() -> InlineKeyboardMarkup:
+    def back() -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
-        builder.button(text=await _("back"), callback_data=Q.MainMenu())
+        builder.button(text=_("back"), callback_data=Q.MainMenu())
         builder.adjust(1, repeat=True)
         return builder.as_markup()

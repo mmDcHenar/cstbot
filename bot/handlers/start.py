@@ -11,6 +11,6 @@ router = Router(name="start")
 @router.message(CommandStart())
 async def start(event: Message) -> Message:
     return await event.answer(
-        await _("welcome"),
-        reply_markup=await K.main_menu()
+        _("welcome"),
+        reply_markup=K.main_menu()
     )
