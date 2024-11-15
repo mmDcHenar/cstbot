@@ -2,11 +2,18 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import django
 
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cstbot.settings")
+
+    if len(sys.argv) == 2 and sys.argv[1] == "runbot":
+        django.setup()
+        import bot
+        bot.setup()
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
