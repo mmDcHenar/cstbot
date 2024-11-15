@@ -1,25 +1,23 @@
-from django.db.models import TextChoices
+from django.db.models import IntegerChoices
 
 
-class UnitType(TextChoices):
-    THEORETICAL = "theoretical", "Theoretical"
-    PRACTICAL = "practical", "Practical"
+class CourseType(IntegerChoices):
+    GENERAL = 1, "general"
+    FOUNDATIONAL = 2, "foundational"
+    SPECIALIZED = 3, "specialized"
+    OPTIONAL = 4, "optional"
 
 
-class CourseType(TextChoices):
-    GENERAL = "general", "General"
-    FOUNDATIONAL = "foundational", "Foundational"
-    SPECIALIZED = "specialized", "Specialized"
-    OPTIONAL = "optional", "Optional"
+class UnitType(IntegerChoices):
+    THEORETICAL = 1, "theoretical"
+    PRACTICAL = 2, "practical"
 
 
-class Group(TextChoices):
-    GATE = "gate", "Gate"
-    RESTAURANT = "restaurant", "Restaurant"
-    DORM = "dorm", "Dorm"
-    FACULTY = "faculty", "Faculty"
-    BANK = "bank", "Bank"
-    OFFICE_BUILDING = "office_building", "Office Building"
-    OTHER = "other", "Other"
-
-
+class PlaceType(IntegerChoices):
+    GATE = 1, "gate"
+    RESTAURANT = 2, "restaurant"
+    DORM = 3, "dorm"
+    FACULTY = 4, "faculty"
+    BANK = 5, "bank"
+    OFFICE_BUILDING = 6, "office_building"
+    OTHER = 7, "other"

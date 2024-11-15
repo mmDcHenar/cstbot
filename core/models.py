@@ -3,7 +3,7 @@ import re
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 
-from utils.types import UnitType, Group, CourseType
+from utils.types import UnitType, PlaceType, CourseType
 
 
 class Text(models.Model):
@@ -53,8 +53,16 @@ class Course(models.Model):
         through="PrerequisiteCourse",
         symmetrical=False,
     )
-    unit_type = models.CharField(max_length=64, choices=UnitType.choices, verbose_name="Unit Type")
-    course_type = models.CharField(max_length=64, choices=CourseType.choices, verbose_name="Course Type")
+    unit_type = models.IntegerField(
+        verbose_name="Unit Type",
+        choices=UnitType.choices,
+        default=UnitType.THEORETICAL.value
+    )
+    course_type = models.IntegerField(
+        verbose_name="Course Type",
+        choices=CourseType.choices,
+        default=CourseType.GENERAL.value
+    )
     has_exam = models.BooleanField(default=True, verbose_name="Course Has Exam?")
     has_project = models.BooleanField(default=False, verbose_name="Course Has Project?")
 
@@ -85,7 +93,7 @@ class PrerequisiteCourse(models.Model):
 
 class Place(models.Model):
     name = models.CharField(max_length=64, verbose_name="Name")
-    group = models.CharField(max_length=64, choices=Group.choices, verbose_name="Group")
+    group = models.IntegerField(verbose_name="Place Type", choices=PlaceType.choices, default=PlaceType.OTHER.value)
     latitude = models.FloatField(verbose_name="Latitude")
     longitude = models.FloatField(verbose_name="Longitude")
 
