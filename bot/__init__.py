@@ -3,12 +3,14 @@ import logging
 import sys
 
 from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.enums import ParseMode
+from aiogram.fsm.storage.base import DefaultKeyBuilder
+from aiogram.fsm.storage.redis import RedisStorage, RedisEventIsolation
 
-from config import BOT_TOKEN, BOT_PROXY
 from . import handlers, middlewares
+from config import BOT_TOKEN, BOT_PROXY, REDIS_PORT, REDIS_HOST
 
 
 def setup():
@@ -19,7 +21,12 @@ def setup():
         stream=sys.stdout
     )
 
-    dp = Dispatcher()
+    storage = RedisStorage.from_url(
+        f"redis://{REDIS_HOST}:{REDIS_PORT}",
+        key_builder=DefaultKeyBuilder(with_bot_id=True)
+    )
+
+    dp = Dispatcher(storage=storage, events_isolation=RedisEventIsolation(storage.redis))
 
     middlewares.setup(dp)
     handlers.setup(dp)
