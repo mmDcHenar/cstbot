@@ -36,7 +36,7 @@ def setup():
     bot = Bot(
         token=BOT_TOKEN,
         session=AiohttpSession(proxy=BOT_PROXY),
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML, link_preview_is_disabled=True)
     )
 
     loop = asyncio.new_event_loop()
