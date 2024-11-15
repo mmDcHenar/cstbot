@@ -13,6 +13,8 @@ services:
 
     volumes:
       - .:/src/
+    depends_on:
+      - redis
 
   bot:
     build: .
@@ -26,6 +28,8 @@ services:
       - local_network
     volumes:
       - .:/src/
+    depends_on:
+      - redis
 
   redis:
     image: redis:latest
