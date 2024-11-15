@@ -3,6 +3,11 @@ services:
     build: .
     restart: always
     env_file: .env
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - local_network
     ports:
       - "127.0.0.1:8000:8000"
 
@@ -14,5 +19,22 @@ services:
     command: "python3 manage.py runbot"
     restart: always
     env_file: .env
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - local_network
     volumes:
       - .:/src/
+
+  redis:
+    image: redis:latest
+    restart: always
+    networks:
+      - local_network
+    ports:
+      - "127.0.0.1:6379:6379"
+
+networks:
+  local_network:
+    driver: bridge
