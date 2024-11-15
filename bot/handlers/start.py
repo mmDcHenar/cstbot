@@ -2,9 +2,15 @@ from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
+from bot.texts import get_message_text as _
+from bot.keyboards import Keyboard as K
+
 router = Router(name="start")
 
 
 @router.message(CommandStart())
 async def start(event: Message) -> Message:
-    return await event.answer("welcome")
+    return await event.answer(
+        await _("welcome"),
+        reply_markup=await K.main_menu()
+    )
