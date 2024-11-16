@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import config
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -49,6 +51,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -144,3 +147,62 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+UNFOLD = {
+    "SITE_TITLE": "Computer Science Tabriz Bot Panel",
+    "SITE_HEADER": "CST Bot Panel",
+    "SITE_URL": "/",
+    "THEME": "dark",
+    "SHOW_HISTORY": True,
+    "ENVIRONMENT": "core.unfold.username_badge",
+    "SIDEBAR": {
+        "show_search": False,
+        "show_all_applications": False,
+        "navigation": [
+            {
+                "title": "Management",
+                "separator": False,
+                "collapsible": False,
+                "items": [
+                    {
+                        "title": "Courses",
+                        "icon": "book_3",
+                        "badge": "core.unfold.courses_count",
+                        "link": reverse_lazy("admin:core_course_changelist"),
+                    },
+                    {
+                        "title": "Places",
+                        "icon": "apartment",
+                        "badge": "core.unfold.places_count",
+                        "link": reverse_lazy("admin:core_place_changelist"),
+                    },
+                    {
+                        "title": "Links",
+                        "icon": "link",
+                        "badge": "core.unfold.links_count",
+                        "link": reverse_lazy("admin:core_link_changelist"),
+                    },
+                    {
+                        "title": "Phones",
+                        "icon": "call",
+                        "badge": "core.unfold.phones_count",
+                        "link": reverse_lazy("admin:core_phone_changelist"),
+                    },
+                    {
+                        "title": "Users",
+                        "icon": "people",
+                        "badge": "core.unfold.users_count",
+                        "link": reverse_lazy("admin:core_tguser_changelist"),
+                    },
+                    {
+                        "title": "Texts",
+                        "icon": "edit_note",
+                        "badge": "core.unfold.texts_count",
+                        "link": reverse_lazy("admin:core_text_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}
