@@ -1,6 +1,7 @@
 services:
   django:
-    build: .
+    # build: .
+    image: chenar/cstbot:latest
     restart: always
     env_file: .env
     networks:
@@ -15,7 +16,8 @@ services:
       - postgres
 
   bot:
-    build: .
+    # build: .
+    image: chenar/cstbot:latest
     command: "python3 manage.py runbot"
     restart: always
     env_file: .env
