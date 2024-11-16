@@ -30,12 +30,10 @@ class TextAdmin(ModelAdmin):
 
 @admin.register(TGUser)
 class TGUserAdmin(ModelAdmin):
-    list_display = ("id", "full_name", "username")
+    list_display = ("id", "full_name", "username", "is_banned")
+    readonly_fields = ("id", "full_name", "username")
 
     def has_add_permission(self, request: HttpRequest) -> bool:
-        return False
-
-    def has_change_permission(self, request: HttpRequest, obj: Optional[TGUser] = None) -> bool:
         return False
 
     def has_delete_permission(self, request: HttpRequest, obj: Optional[TGUser] = None) -> bool:
