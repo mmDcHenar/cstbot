@@ -19,8 +19,12 @@ class Keyboard:
         return builder.as_markup()
 
     @staticmethod
-    def back() -> InlineKeyboardMarkup:
+    def freshman(back: bool = False) -> InlineKeyboardMarkup:
         builder = InlineKeyboardBuilder()
-        builder.button(text=_("back"), callback_data=Q.MainMenu())
+        if back:
+            builder.button(text=_("back"), callback_data=Q.Freshman(mode=Q.Freshman.Mode.MENU))
+        else:
+            builder.button(text=_("freshman_register"), callback_data=Q.Freshman(mode=Q.Freshman.Mode.REGISTER))
+            builder.button(text=_("back"), callback_data=Q.MainMenu())
         builder.adjust(1, repeat=True)
         return builder.as_markup()
