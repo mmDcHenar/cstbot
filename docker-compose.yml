@@ -6,7 +6,7 @@ services:
     networks:
       - local_network
     ports:
-      - "127.0.0.1:8000:8000"
+      - 8000:8000
 
     volumes:
       - .:/src/
@@ -33,16 +33,12 @@ services:
     restart: always
     networks:
       - local_network
-    ports:
-      - "127.0.0.1:6379:6379"
 
   postgres:
     image: postgres:latest
     env_file: .env
     networks:
       - local_network
-    ports:
-      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
