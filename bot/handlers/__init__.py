@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, F
 from aiogram.enums.chat_type import ChatType
 
-from . import start, main_menu, freshman, unknown_command
+from . import start, main_menu, places, freshman, unknown_command
 
 
 def setup(dp: Dispatcher):
@@ -10,6 +10,7 @@ def setup(dp: Dispatcher):
 
     dp.include_router(start.router)
     dp.include_router(main_menu.router)
+    dp.include_router(places.router)
     dp.include_router(freshman.router)
 
     dp.include_router(unknown_command.router)  # this router must be last one

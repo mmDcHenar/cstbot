@@ -11,3 +11,16 @@ class Freshman(CallbackData, prefix="freshman"):
         REGISTER = "register"
 
     mode: Mode = "menu"
+
+
+class Place(CallbackData, prefix="place"):
+    pass
+
+
+class Group(CallbackData, prefix="place"):
+    group: int
+
+
+class Location(CallbackData, prefix="place"):
+    latitude: float
+    longitude: float
