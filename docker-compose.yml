@@ -8,9 +8,6 @@ services:
       - local_network
     ports:
       - 8000:8000
-
-    volumes:
-      - .:/src/
     depends_on:
       - redis
       - postgres
@@ -23,8 +20,6 @@ services:
     env_file: .env
     networks:
       - local_network
-    volumes:
-      - .:/src/
     depends_on:
       - redis
       - postgres
