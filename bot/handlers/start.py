@@ -10,7 +10,4 @@ router = Router(name="start")
 
 @router.message(CommandStart())
 async def start(event: Message) -> Message:
-    return await event.answer(
-        _("welcome"),
-        reply_markup=K.main_menu()
-    )
+    return await event.answer(_("welcome", full_name=event.from_user.full_name), reply_markup=K.main_menu())
