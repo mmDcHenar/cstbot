@@ -26,6 +26,7 @@ services:
     depends_on:
       - redis
       - postgres
+      - django
 
   redis:
     image: redis:latest
@@ -42,7 +43,12 @@ services:
       - local_network
     ports:
       - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 networks:
   local_network:
     driver: bridge
+
+volumes:
+  postgres_data:
