@@ -12,7 +12,7 @@ from utils.types import PlaceType
 router = Router(name="places")
 
 
-@router.message(F.text == __("places"))
+@router.message(lambda f: f.text == __("places"))
 async def places_list(event: Message) -> None:
     await event.answer(_("groups_menu"), reply_markup=K.place(mode="group"))
 
