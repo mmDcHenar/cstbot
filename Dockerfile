@@ -10,4 +10,6 @@ RUN [ "pip", "install", "--upgrade", "--no-cache-dir", "-r", "requirements.txt" 
 
 COPY . .
 
+RUN [ "python", "manage.py", "collectstatic", "--no-input" ]
+
 CMD [ "bash", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000" ]
