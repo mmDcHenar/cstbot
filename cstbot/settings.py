@@ -13,9 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from urllib.parse import urlparse
 
-import config
-
 from django.urls import reverse_lazy
+from django.templatetags.static import static
+
+import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -164,6 +165,14 @@ UNFOLD = {
     "THEME": "dark",
     "SHOW_HISTORY": True,
     "ENVIRONMENT": "core.unfold.username_badge",
+    "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "sizes": "32x32",
+            "type": "image/svg+xml",
+            "href": lambda request: static("favicon.ico"),
+        },
+    ],
     "SIDEBAR": {
         "show_search": False,
         "show_all_applications": False,
