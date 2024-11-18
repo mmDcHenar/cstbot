@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from urllib.parse import urlparse
+
 import config
 
 from django.urls import reverse_lazy
@@ -39,14 +41,17 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DEBUG
 
+CORS_ORIGIN_ALLOW_ALL = DEBUG
+
+ALLOWED_HOSTS = [urlparse(config.BASE_URL).hostname]
+CORS_ALLOWED_ORIGINS = [config.BASE_URL]
+
+CSRF_TRUSTED_ORIGINS = [config.BASE_URL]
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
-    CORS_ORIGIN_ALLOW_ALL = True
-else:
-    from urllib.parse import urlparse
-    ALLOWED_HOSTS = [urlparse(config.BASE_URL).hostname]
-    CORS_ALLOWED_ORIGINS = [config.BASE_URL]
-
 
 # Application definition
 
