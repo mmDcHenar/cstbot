@@ -32,7 +32,7 @@ class Keyboard:
         builder.button(text=_("links"))
         builder.button(text=_("about"))
         builder.adjust(1, 2, 2, 1)
-        return builder.as_markup()
+        return builder.as_markup(resize_keyboard=True)
 
     @staticmethod
     def freshman(back: bool = False) -> InlineKeyboardMarkup:
